@@ -4,7 +4,7 @@ import falcon
 
 class JSONFormatterMiddleware:
     def process_request(self, req, resp):
-        empy_error_message = 'Empty request body. A valid JSON document is required.'
+        empy_error_message = 'Empty request body.'
         if req.content_length in (None, 0):
             raise falcon.HTTPBadRequest(empy_error_message)
         body = req.stream.read()
@@ -15,7 +15,7 @@ class JSONFormatterMiddleware:
         except (ValueError, UnicodeDecodeError):
             raise falcon.HTTPError(
                 falcon.HTTP_753,
-                'Could not decode the request body.'
+                'Invalid JSON request body.'
             )
 
     def process_response(self, req, resp, resource, req_succeeded):

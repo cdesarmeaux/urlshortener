@@ -25,10 +25,10 @@ def to_base_10(val):
 
 def validate_url(url):
     try:
-        result = urlparse.urlparse(url)
-        if result.path:
-            return all([result.scheme, result.netloc, result.path])
-        return all([result.scheme, result.netloc])
+        url_parts = urlparse.urlparse(urlparse.urljoin(url, '/'))
+        parts_valid = all([url_parts.scheme, url_parts.netloc, url_parts.path])
+        netloc_valid = len(url_parts.netloc.replace('www.', '').split('.')) > 1
+        return parts_valid and netloc_valid
     except:
         return False
 
