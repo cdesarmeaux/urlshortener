@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  urlshortener:
+    build: ./urlshortener
+    ports:
+      - "8080:8080"
+    environment:
+      - HOSTNAME=localhost
+      - PORT=8000
+    volumes:
+      - ./urlshortener:/usr/src/app
+    network_mode: host
+    command: /usr/local/bin/gunicorn -c gunicorn.py main:api
+
+  nginx:
+    build: ./nginx
+    network_mode: host
+    ports:
+      - "8000:8000"
