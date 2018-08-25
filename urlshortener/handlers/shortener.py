@@ -2,8 +2,8 @@ import falcon
 import urlparse
 import httplib
 import requests
-import os
-from utils import validate_url, build_url, to_base_62, to_base_10
+from utils import (to_base_10, to_base_62, validate_url, build_url,
+    get_base_hostname)
 from models import UrlMap
 
 
@@ -35,8 +35,7 @@ class UrlShortenerHandler(object):
             raise falcon.HTTPBadRequest(
                 'Invalid URL'
             )
-        base_url = build_url(os.environ['HOSTNAME'], port=os.environ['PORT'])
-        shortend_url = base_url
+        shortend_url = get_base_hostname()
         url_query = UrlMap.select().where(UrlMap.url == url)
         url_obj = {}
         if not url_query.exists():

@@ -1,6 +1,7 @@
 import string
 import math
 import urlparse
+import os
 
 base = string.digits + string.lowercase + string.uppercase
 
@@ -38,3 +39,16 @@ def build_url(hostname, scheme='http', port=None, path=None):
     full = '/'.join((netloc, path)) if path else netloc
     url = '://'.join((scheme, full))
     return url
+
+
+def get_base_hostname():
+    result = 'localhost'
+    try:
+        result = os.environ['HOST']
+    except:
+        pass
+    try:
+        result = ':'.join((result, str(os.environ['PORT'])))
+    except:
+        pass
+    return result
