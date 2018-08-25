@@ -1,20 +1,28 @@
-version: '3'
+version: "2"
 
 services:
   urlshortener:
+    container_name: urlshortener
     build: ./urlshortener
-    ports:
-      - "8080:8080"
+    expose: 
+      - 8080
     environment:
       - HOSTNAME=localhost
       - PORT=8000
     volumes:
       - ./urlshortener:/usr/src/app
-    network_mode: host
+    networks:
+      - backbone
     command: /usr/local/bin/gunicorn -c gunicorn.py main:api
 
   nginx:
+    container_name: nginx
     build: ./nginx
-    network_mode: host
+    networks:
+      - backbone
     ports:
       - "8000:8000"
+
+networks:
+  backbone:
+    driver: bridge
